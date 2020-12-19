@@ -19,15 +19,16 @@
 struct var{
     void *allocptr;
     char *name;
+    unsigned int size;
     struct var *next;
 };
 
 /* As with any other linked list, this base
  * will be the head for the varlist. Since
  * performance isn't a huge issue in testland,
- * I'll take the runtime penalty. All iterations
- * start from this, and it should be initialized
- * to null at startup.
+ * I'll take the runtime penalty. Anywho all iterations
+ * start from this guy, which should be initialized to
+ * null at startup.
  */
 extern struct var *varlist;
 
