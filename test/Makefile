@@ -1,23 +1,26 @@
-SRC = $(shell find src/ -name "*.c")
+SRC = $(shell find . -name "*.c")
 OBJ = $(SRC:.c=.o)
 DEP = $(OBJ:.o=.d)
 
-CFLAGS  = -O2 -march=native -pipe -Iinclude
+CFLAGS  = -O2 -march=native -pipe -I../include
 CFLAGS += -Wall -Wextra -Werror -pedantic -ansi
+
+LDFLAGS = -lreadline ../libkpmalloc.a
 
 # For now...
 CFLAGS += -DDEBUG -g
-MAKEFLAGS = --no-print-directory
-ARFLAGS = rcs
-TARGET  = libkpmalloc.a
 
-$(TARGET): $(OBJ)
-	@echo "	AR	$@"
-	@$(AR) $(ARFLAGS) $@ $^ 
+KPMALLOC = ../libkpmalloc.a
+TARGET = test.exe
 
 .PHONY: test
 test: $(TARGET)
-	@cd test/ && $(MAKE) $(MAKEFLAGS) test
+	@echo "	EXECVP	$(TARGET)"
+	@./$(TARGET)
+
+$(TARGET): $(OBJ)
+	@echo "	LD	$@"
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ 
 
 %.o: %.c
 	@echo "	CC	$@"
@@ -32,4 +35,4 @@ test: $(TARGET)
 clean:
 	@echo "	CLEAN	$(TARGET)"
 	@rm -rf $(OBJ) $(DEP) $(TARGET)
-	@cd test/ && $(MAKE) $(MAKEFLAGS) clean
+

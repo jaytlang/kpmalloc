@@ -1,4 +1,4 @@
 **.d
 **.o
 libkpmalloc.a
-
+test/test.exe
