@@ -14,6 +14,11 @@ kpmalloc(unsigned int size)
     unsigned int blocks;
     struct block *previous, *current;
 
+    if(size < 1){
+        LOG(("Bad argument: size should be >0\n"));
+        return NULL;
+    }
+
     blocks = ((size + sizeof(struct block) - 1) / sizeof(struct block)) + 1;
     if(freelist == NULL){
         if(kpinit() < 0){
@@ -77,6 +82,11 @@ void
 kpfree(void *ptr)
 {
     struct block *thisblock, *current, *previous;
+
+    if(!ptr){
+        LOG(("Null pointer passed to free, ignoring\n"));
+        return;
+    }
 
     thisblock = (struct block *)ptr - 1;
 

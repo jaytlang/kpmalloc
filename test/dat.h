@@ -17,7 +17,7 @@
  * trying to make these.
  */
 struct var{
-    void *allocptr;
+    char *allocptr;
     char *name;
     unsigned int size;
     struct var *next;

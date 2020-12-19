@@ -5,7 +5,7 @@ DEP = $(OBJ:.o=.d)
 CFLAGS  = -O2 -march=native -pipe -I../include
 CFLAGS += -Wall -Wextra -Werror -pedantic -ansi
 
-LDFLAGS = -lreadline ../libkpmalloc.a
+LDFLAGS = ../libkpmalloc.a -lreadline
 
 # For now...
 CFLAGS += -DDEBUG -g
@@ -20,7 +20,7 @@ test: $(TARGET)
 
 $(TARGET): $(OBJ)
 	@echo "	LD	$@"
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ 
+	@$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) 
 
 %.o: %.c
 	@echo "	CC	$@"
