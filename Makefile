@@ -5,6 +5,9 @@ DEP = $(OBJ:.o=.d)
 CFLAGS  = -O2 -march=native -pipe -Iinclude
 CFLAGS += -Wall -Wextra -Werror -pedantic -ansi
 
+# For now...
+CFLAGS += -DDEBUG -g
+
 ARFLAGS = rcs
 TARGET  = libkpmalloc.a
 

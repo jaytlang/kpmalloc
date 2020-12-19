@@ -23,12 +23,15 @@ struct block{
  * size 0, and used by malloc furthermore.
  */
 extern struct block *sentinel;
+extern struct block *freelist;
 
-/* How large should functions like kpinit attempt
- * to make the mempool? We will start with the size
- * offered by the RV32 board I'd like to port to, to
- * keep things simple.
+/* Initial number of units/blocks to have kpinit grab
+ * during its setup invocation. Minimum 1, but could
+ * totally be bigger, because a size of 1 will likely result
+ * in a second call to kpget during the first few allocs. I'm
+ * gonna trivially set this to 1 for now though to make sure
+ * everything is going as intended.
  */
-#define MEMPOOL_SZ 0x3fff
+#define INITIAL_ALLOC_UNITS 1
 
 #endif /* INC_DAT_H */
