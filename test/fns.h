@@ -12,13 +12,13 @@ struct var;
  * still be removed directly via use of freevar.
  * 
  * prompt: typical string to present to the user.
- * returns: a var structure allocated on the heap
- *      corresponding to the user's response. NULL
+ * returns: a var structure is allocated on the heap
+ *      corresponding to the user's response. -1
  *      if the user punches in something bad, it's
  *      the caller's responsibility to figure it out.
- *      it's also the caller's job to free this later.
+ *      0 otherwise.
  */
-struct var *parseline(const char *prompt);
+int parseline(const char *prompt);
 
 /* Allocate a var object with a string and a size.
  * This constitutes checking if it's on the varlist,
@@ -63,5 +63,13 @@ void freevar(struct var *varptr);
  * return: a valid variable reference on success. NULL on failure.
  */
 struct var *findvar(char *varname);
+
+/* Print the current varlist, so long as it has been
+ * properly initialized to begin with.
+ * 
+ * return: 0 on success, -1 on failure...not that it
+ * matters too much.
+ */
+int printvarlist(void);
 
 #endif /* INC_KPTEST_FNS_H */

@@ -32,4 +32,19 @@ struct var{
  */
 extern struct var *varlist;
 
+/* The parser expects fixed string constants from the
+ * user, with the following syntax:
+ * -> malloc varname size
+ * -> free varname
+ * -> status
+ * The command-y bits of this are written out here.
+ */
+#define MALLOC_CMD "malloc"
+#define FREE_CMD "free"
+#define STATUS_CMD "status"
+#define EXIT_CMD "exit"
+
+/* The delimiter for the parser, by default a space. */
+#define DELIMITER " "
+
 #endif /* INC_KPTEST_DAT_H */

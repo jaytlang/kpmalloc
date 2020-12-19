@@ -19,9 +19,17 @@ findvar(char *varname)
         return NULL;
     }
 
-    for(vp = varlist; vp->next; vp = vp->next){
-        if(strcmp(vp->name, varname) == 0) return vp;
+    vp = varlist;
+    for(;;){
+        if(strcmp(vp->name, varname) == 0){
+            fprintf(stderr, "\tfound variable %s.\n", varname);
+            return vp;
+        }
+
+        if(!vp->next) break;
+        else vp = vp->next;
     }
+    fprintf(stderr, "\tNo such variable (%s) found\n", varname);
     return NULL;
 }
 
@@ -93,8 +101,12 @@ freevar(struct var *varptr)
 
     /* Evict us from the varlist */
     vp = varlist;
-    while(vp->next != varptr) vp = vp->next;
+    while(vp != varptr) vp = vp->next;
     vp->next = varptr->next;
+    if(vp == varlist){
+        if(varlist->next) varlist = varlist->next;
+        else varlist = NULL;
+    }
 
     /* Then, formally free the structure.
      * varptr was allocated on the host heap,
@@ -106,4 +118,23 @@ freevar(struct var *varptr)
     if(varptr->allocptr) kpfree(varptr->allocptr);
     free(varptr);
     return;
+}
+
+int
+printvarlist(void)
+{
+    struct var *vp;
+
+    if(!varlist){
+        fprintf(stderr, "\tError: varlist is not initialized, can't print\n");
+        return -1;
+    }
+
+    vp = varlist;
+    for(;;){
+        printf("\t%s: allocated block of size %d => %p\n",
+            vp->name, vp->size, vp->allocptr);
+        if(!vp->next) return 0;
+        else vp = vp->next;
+    }
 }

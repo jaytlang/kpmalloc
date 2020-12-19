@@ -24,15 +24,14 @@ kpmalloc(unsigned int size)
         if(kpinit() < 0){
             LOG(("Failed to initialize kpmalloc!\n"));
             return NULL;
-        }
+        }else LOG(("Successfully initialized kpmalloc\n"));
     }
+
 
     previous = freelist;
     current = freelist->next;
-    for(;;){
-        previous = current;
-        current = current->next;
-
+    for(;; previous = current, current = current->next){
+        LOG(("Current size: %d vs. %d needed\n", current->size, blocks));
         if(current->size == blocks){
             /* Good to go. Remove the block from
              * the free list without modification,
@@ -74,6 +73,7 @@ kpmalloc(unsigned int size)
                 LOG(("Supplemental memory kpget failed. OOM?\n"));
                 return NULL;
             }
+            LOG(("Finished supplementary kpget request\n"));
         }
     }
 }
@@ -89,6 +89,7 @@ kpfree(void *ptr)
     }
 
     thisblock = (struct block *)ptr - 1;
+    LOG(("Freeing block of size %d...\n", thisblock->size));
 
     /* Find the right slot for us in the freelist from an
      * ordering perspective...
@@ -134,5 +135,6 @@ kpfree(void *ptr)
 
     /* All done */
     freelist = previous;
+    LOG(("Free successful\n"));
     return;
 }

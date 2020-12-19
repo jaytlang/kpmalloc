@@ -3,10 +3,11 @@
 #include <kpmalloc.h>
 
 #include "dat.h"
+#include "fns.h"
 
 int
 main()
 {
-    printf("This is a test!\n");
-    return 0;
+    printf("Welcome to the test suite!\n");
+    for(;;) parseline("> ");
 }

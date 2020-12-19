@@ -24,12 +24,13 @@ kpinit(void)
     if(sentinel == NULL){
         LOG(("bootstrap kpget invocation failed!\n"));
         return -1;
-    }
+    }else LOG(("bootstrap kpget invocation succeeded\n"));
 
-    /* Problem solved. free will link us up with
+    /* Problem solved. Link us up with
      * ourselves properly, and the size should
      * get properly set to a degenerate value of 0.
      */
+    sentinel->next = sentinel;
     return 0;
 }
 
@@ -40,13 +41,13 @@ kpget(unsigned int blocks)
     struct block *newhdr;
     int fd;
 
-    if(blocks < 1){
-        LOG(("Illegal argument: size should be > 0\n"));
-        return NULL;
-    }
+    /* Need to allocate a header for these things
+     * in conjunction with the actual data requested
+     */
+    blocks++;
 
     /* Under Linux/BSD, we mmap. */
-    fd = open("/dev/zero", O_RDWR);
+    fd = open("/dev/zero", O_RDONLY);
     if(fd < 0){
         LOG(("Failed to open /dev/zero for mmap\n"));
         return NULL;
@@ -72,8 +73,9 @@ kpget(unsigned int blocks)
      * 
      * Otherwise, we set this up with kpfree.
      */
-    if(freelist == NULL) freelist = newhdr;
+    if(!freelist) freelist = newhdr;
     else kpfree(newhdr + 1);
 
-    return newhdr;
+    LOG(("mapped in %d blocks of memory successfully\n", blocks));
+    return freelist;
 }

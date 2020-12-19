@@ -26,12 +26,12 @@ extern struct block *sentinel;
 extern struct block *freelist;
 
 /* Initial number of units/blocks to have kpinit grab
- * during its setup invocation. Minimum 1, but could
- * totally be bigger, because a size of 1 will likely result
+ * during its setup invocation. Minimum 0, but could
+ * totally be bigger, because a size of 0 will result
  * in a second call to kpget during the first few allocs. I'm
- * gonna trivially set this to 1 for now though to make sure
+ * gonna trivially set this to 0 for now though to make sure
  * everything is going as intended.
  */
-#define INITIAL_ALLOC_UNITS 1
+#define INITIAL_ALLOC_UNITS 0
 
 #endif /* INC_DAT_H */

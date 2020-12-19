@@ -39,7 +39,8 @@ int kpinit(void);
  *      the free pointer will be returned to us afterwards, so we can
  *      continue using the best fit policy.
  * 
- * size: how much memory we want from the OS/HAL. Must be >0.
+ * size: how much memory we want from the OS/HAL. Must be >=0 and excludes
+ *      the header block.
  * 
  * return: the new memory if successful (i.e. new freep), NULL if failed.
  */
